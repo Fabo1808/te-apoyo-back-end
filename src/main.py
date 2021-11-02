@@ -49,7 +49,7 @@ def sitemap():
 
 
 # registra una ONG
-@app.route('/teapoyo', methods=['POST'])
+@app.route('/ong', methods=['POST'])
 
 def handle_registration_ong():
     data_new_ong = request.json
@@ -68,6 +68,7 @@ def handle_ong_login():
     ong_name= request.json.get('ong_name', None)
     password= request.json.get('password',None)
     ong= Ong.query.filter_by(ong_name=ong_name,password= password).one_or_none()
+    print(ong)
     if ong is not None:
         access_token= create_access_token(identity=ong.id)
         return jsonify({"token":access_token, "ong_name":ong.ong_name}),200
