@@ -12,7 +12,7 @@ from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import  db, Ong,Activity,Voluntary
 import requests
-from flask_jwt_extended import JWTManager,create_access_token, get_jwt_identity,jwt_required
+from flask_jwt_extended import JWTManager,create_access_token, git 
 
 #from models import Person
 
@@ -91,7 +91,7 @@ def handle_ong_login():
 # crea una actividad
 
 @app.route('/activity', methods=[ 'POST'])
-# # @jwt_required()
+#@jwt_required()
 def handle_create_activity():
 
     data_new_activity = request.json
@@ -105,7 +105,7 @@ def handle_create_activity():
 # retorna todas las actividades
 
 @app.route('/activity', methods=[ 'GET'])
-# # @jwt_required()
+
 def handle_get_all_activities():
     all_activities=Activity.query.all()
     response=list(map(lambda activity:activity.serialize(),all_activities))

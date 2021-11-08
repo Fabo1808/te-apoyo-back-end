@@ -6,13 +6,15 @@ db = SQLAlchemy()
 
 class Ong(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    ong_name = db.Column(db.String(30),  unique=True, nullable=False)
+    ong_name = db.Column(db.String(20),  unique=True, nullable=False)
     password = db.Column(db.String(20),  unique=False, nullable=False)
     location = db.Column(db.String(100), unique= False, nullable= False)
-    image= db.Column(db.String(100), unique = False, nullable= False)
-    logo = db.Column(db.String(100),unique = True, nullable= False)
+    image= db.Column(db.String(50), unique = False, nullable= False)
+    logo = db.Column(db.String(50),unique = True, nullable= False)
     website_address = db.Column(db.String(50),unique= True, nullable =False)
     rif= db.Column(db.String(20),unique= True, nullable = False)
+    bank= db.Column(db.String(30), unique=False, nullable= False)
+    account= db.Column(db.String(30), unique= False,nullable=False)
     description= db.Column(db.String(300),unique=False, nullable=True)
     activities = db.relationship('Activity', backref='ong',uselist=True)
    
@@ -23,8 +25,12 @@ class Ong(db.Model):
             'ong_name':self.ong_name,
             'location': self.location,
             'logo': self.logo,
+            'image':self.image,
             'rif': self.rif,
             'website_address':self.website_address,
+            'description':self.description,
+            'bank':self.bank,
+            'account':self.account,
             'activities':[activity.serialize() for activity in self.activities]
         }
 
@@ -45,7 +51,7 @@ class Ong(db.Model):
 
 class Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    activity_name = db.Column(db.String(50), unique=False, nullable=False)
+    activity_name = db.Column(db.String(20), unique=False, nullable=False)
     image= db.Column(db.String(100), unique = False, nullable= False)
     description= db.Column(db.String(300),unique=False, nullable=False)
     quota = db.Column(db.Integer, unique = False, nullable = False)
@@ -95,16 +101,12 @@ class Activity(db.Model):
 
 
 
-
-
-
-
 class Voluntary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=False, nullable=False)
-    lastName= db.Column(db.String(100), unique = False, nullable= False)
-    email = db.Column(db.String(300),unique=False, nullable=False)
-    phone= db.Column(db.Integer, unique = False, nullable = False)
+    name = db.Column(db.String(20), unique=False, nullable=False)
+    lastName= db.Column(db.String(20), unique = False, nullable= False)
+    email = db.Column(db.String(50),unique=False, nullable=False)
+    phone= db.Column(db.String(15), unique = False, nullable = False)
     activity_id = db.Column(db.Integer, db.ForeignKey("activity.id"), nullable=False)
     __table_args__=(db.UniqueConstraint(
         'name',
@@ -117,6 +119,9 @@ class Voluntary(db.Model):
 
   # como hago para registrar un numero de telefono, con integer dice fuera de rango
   #como hago para reconocer el voluntario sin una clave o nombre de usuario
+  #como borro una actividad y que se borren sus voluntarios al mismo tiempo , igual con las ong
+  # colocar la fecha y hora ? en que formato?
+  #como pudiera eliminar las actividades despues que pase la fecha de ejecucion
     
     def serialize(self):
         return{
